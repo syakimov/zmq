@@ -1,5 +1,91 @@
 # ZMQ
 
+Buzzwords {
+  TCP socket
+  latency
+  scale
+  networking
+  distributed computing
+  routing
+  paralel
+  connected
+}
+
+Beginning {
+
+  Pieter Hintjens
+  Fred Brooks
+
+  embeddable networking library but acts like a concurrency framework
+
+  sockets carry atomic messages
+
+  transports
+    in-process
+    inter-process
+    TCP
+    multicast
+
+  connect sockets N-to-N with patterns
+    fan-out
+    pub-sub
+    task distribution
+    request-reply
+
+  clustered products
+
+  asynchronous I/O model
+  scalable multicore applications
+
+  asynchronous message-processing tasks
+}
+
+
+Concept {
+  zero broker -> zero latency
+  simple
+  tradeo-offs game
+}
+
+Basics {
+  fast
+  sockets
+  routing
+  small
+  strong and scilent
+  decentralised
+  thread
+  protocol
+  network
+  productivity
+  reliability
+  mainframe
+  connected code
+  IETF
+  clients
+  protocols
+    UDP
+    TCP
+  websockets
+  HTTP
+  P2P architecture
+  Skype Bittorent
+  building block
+}
+
+Client-Server-Model {
+}
+
+RPC {
+}
+
+Strings {
+  Protocol Buffer
+  formatting data
+  message frame
+  ZeroMQ strings are length-specified and are sent on the wire without a trailing null
+}
+
 Getting the msg out {
   PUB - SUB pattern
   one way data distribution
