@@ -9,6 +9,10 @@ Buzzwords {
   routing
   paralel
   connected
+  arbitrary -> random
+  upstream -> send data from client to server
+  downstream != upstream
+  gotcha -> valid but tricky
 }
 
 Beginning {
@@ -106,8 +110,12 @@ Getting the msg out {
   }
 }
 
-Divide and Conquer { <= To Be Con...
+Divide and Conquer {
   parallel pipeline
+  the worker `connect upstream` to the ventilator (PULL)
+    and `downstream` to the sink                  (PUSH)
+  ventilator and sink are stable
+    while workers are dynamic
 }
 
 Chapter 2 - Sockets and Patterns {
