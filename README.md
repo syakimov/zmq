@@ -13,6 +13,9 @@ Buzzwords {
   upstream -> send data from client to server
   downstream != upstream
   gotcha -> valid but tricky
+  load balancing -> distributing tasks to workers
+  fair queuing -> collect results from workers evenly
+  pipeline pattern
   data frame = 'tabular' data -> data like a row in SQL db
   wire protocol -> data transfer between apps
   interoperability -> how to make C and Go use same data structures
@@ -20,6 +23,11 @@ Buzzwords {
   messaging layer
   SOAs -> service-oriented architectures
   topology -> structure of the app network
+}
+
+Buzz expressions {
+  to bound to an endpoint
+  to connect upstream to something
 }
 
 Beginning {
@@ -118,11 +126,16 @@ Getting the msg out {
 }
 
 Divide and Conquer {
-  parallel pipeline
+  paralel pipeline
   the worker `connect upstream` to the ventilator (PULL)
     and `downstream` to the sink                  (PUSH)
-  ventilator and sink are stable
-    while workers are dynamic
+  ventilator and sink are `stable`
+    while workers are `dynamic`
+  ventilator is responsible for load balancing
+  sink is responsible for fair queuing
+  `slow joiner` syndrome ->
+    if you do not synch the PULL workers connection
+      some will get less workload than others.
 }
 
 Getting the Context Right {
