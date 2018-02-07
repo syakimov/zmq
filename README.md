@@ -13,6 +13,13 @@ Buzzwords {
   upstream -> send data from client to server
   downstream != upstream
   gotcha -> valid but tricky
+  data frame = 'tabular' data -> data like a row in SQL db
+  wire protocol -> data transfer between apps
+  interoperability -> how to make C and Go use same data structures
+  interoperability -> interpret the info transferred between programs
+  messaging layer
+  SOAs -> service-oriented architectures
+  topology -> structure of the app network
 }
 
 Beginning {
@@ -117,6 +124,89 @@ Divide and Conquer {
   ventilator and sink are stable
     while workers are dynamic
 }
+
+Getting the Context Right {
+  the context is the container for all sockets in a single process
+  the context is responsible for the transport for inproc sockets
+  inproc sockets are the fastest way to connect threads in one process.
+
+  // create and destroy context
+  {
+    context, _ := zmq.NewContext()
+    defer context.Close()
+  }
+}
+
+Making a Clean Exit {
+  Main objects:
+    messages
+    sockets
+    contexts
+
+  exit process
+    close sockets
+    close context
+}
+
+Why We Needed ZeroMQ {
+  reusable message layer has to solve the following
+    * I/O has to be in the background
+    * dynamic components: servers and clients.
+    * Server to server connection. How is reconnection performed.
+    * Message entity. Data framing. Efficient for small and big data.
+    * How to queue up messages while client is down and flush them when is up
+    * Messages are discarded or saved. Store MSG in queues or db.
+    * Where store message queue? Strategy for slow message reader and queue grow?
+    * Lost messages handle. MSG consistency ensured with reliability layer. RL crash
+    * Change ins network transport (TCP multicast - unicast, IPv6)
+    * Send message to multiple peers (MSG routing) How peers send acknowledge
+    * enforce encoding for data types
+    * handling network errors
+
+  `broker` concept
+    addressing
+    routing
+    queuing
+
+  `broker`
+    reduces complexity in large networks
+    often becomes bottleneck
+    used for failover scheme
+
+    ZeroMQ does {
+      handle I/O asynch in background threads which do not lock
+      components can disconnect and connect at any time
+      queues messages automatically when needed
+      when overfulled queues either throws messages or blocks senders
+      transport is abstracted and can be changed any time
+      handle slow/blocked readers safely according to pattern
+      supports PUB-SUB and REQ-REPLY message routing patterns
+      delivers whole mesages as they were sent
+      messages are blobs and you decide how to represent data (Protobuf)
+      handles network errors and retries
+      uses less CPU
+    }
+
+  ZeroMQ is {
+    socket-inspired API
+      zmq_send()
+      zmq_recv()
+    central loop of the app is message processing
+    app is composed of message processing tasks
+      each task maps to a node
+      nodes talk to each other using easily changed transports
+    nodes
+      two nodes in one process -> node is a thread
+      two nodes in one box(machine) -> node is a process
+      two nodes in one network -> node is a box
+  }
+}
+
+Socket Scalability {
+
+}
+
+http://zguide.zeromq.org/page:all#Socket-Scalability
 
 Chapter 2 - Sockets and Patterns {
   synchronize subscriber and publisher -> avoid losing data
