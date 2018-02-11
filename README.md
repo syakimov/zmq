@@ -23,6 +23,11 @@ Buzzwords {
   messaging layer
   SOAs -> service-oriented architectures
   topology -> structure of the app network
+  network topology
+  multicast protoco
+  bind a socket to an endpoint
+  difference between bind and connect a socket to an endpoint
+  bind static networks nodes
 }
 
 Buzz expressions {
@@ -219,7 +224,74 @@ Socket Scalability {
 
 }
 
-http://zguide.zeromq.org/page:all#Socket-Scalability
+Warning-Unstable-Paradigms {
+  ZMQ paradigm One socket == One connection
+  threads of logic
+    each thread works with one socket and one peer
+    each thread has intelligence and state
+
+  ZMQ sockets
+    fast little background communications engines
+    manage set of private connections
+    the socket is facade for working with the connections
+    that enables the app code not to care about the network protocol
+}
+
+Chapter-Sockets-and-Patterns {
+  create and work with ZeroMQ sockets.
+  send and receive messages on sockets.
+  build your apps around ZeroMQ's asynchronous I/O model.
+  handle multiple sockets in one thread.
+  handle fatal and nonfatal errors properly.
+  handle interrupt signals like Ctrl-C.
+  shut down a ZeroMQ application cleanly.
+  check a ZeroMQ application for memory leaks.
+  send and receive multipart messages.
+  forward messages across networks.
+  build a simple message queuing broker.
+  write multithreaded applications with ZeroMQ.
+  use ZeroMQ to signal between threads.
+  use ZeroMQ to coordinate a network of nodes.
+  create and use message envelopes for pub-sub.
+  Using the HWM (high-water mark) to protect against memory overflows.
+
+  Socket API {
+    create      -> zmq_socket()
+    close       -> zmq_close()
+    set options -> zmq_setsockopt()
+    get options -> zmq_getsockopt()
+
+    plug socket into the network topology -> create zmq connections
+      zmq_bind(), zmq_connect()
+
+    write   messages -> zmq_msg_send()
+    receive messages -> zmq_msg_recv()
+  }
+
+  Plugging-Sockets-into-the-Topology {
+    connection between nodes
+    bind the server address with zmq_bind()
+    connect the client to server address with zmq_connect()
+
+    classic tcp vs zmq connection
+      zmq connection use diff transport: inproc, ipc, tcp, pgm, epgm
+      zmq socket can have many outgoing and incoming connections
+      when a zmq socket is bound to an endpoint it automatically accept connecions
+      zmq reconnects if the network is broken automatically
+      the connections are encapsulated under the zmq socket
+
+    when client connets before the server zmq allows him to send messages
+    they will queue up until the server binds
+    endpoint is a combination of protocol and address
+    with a single socket server node can bind to many endpoints
+     (zmq socket can accept connections through various transport)
+
+    udp allows to bind an endpoint only != ipc
+    sockets work together as `messagging patterns`
+  }
+}
+
+http://zguide.zeromq.org/page:all#Sending-and-Receiving-Messages
 
 Chapter 2 - Sockets and Patterns {
   synchronize subscriber and publisher -> avoid losing data
