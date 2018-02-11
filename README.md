@@ -28,6 +28,7 @@ Buzzwords {
   bind a socket to an endpoint
   difference between bind and connect a socket to an endpoint
   bind static networks nodes
+  disconnected TCP transport
 }
 
 Buzz expressions {
@@ -289,9 +290,29 @@ Chapter-Sockets-and-Patterns {
     udp allows to bind an endpoint only != ipc
     sockets work together as `messagging patterns`
   }
+
+  Sending-and-Receiving-Messages {
+    zmq_msg_send()
+    zmq_msg_recv()
+
+    TCP sockets are 1 to 1
+    zmq sockets are 1 to N
+
+    zmq carry messages (like UDP) while TCP carry stream of bites
+    zmq message is length-specified binary data
+    zmq sockets do I/O in a background thread
+    zmq_send() pushes the message in a queue and send it in the background
+  }
+
+  Unicast Transports {
+    unicast   transports: inproc, ipc, tcp
+    multicast transports: epgm and pgm (advance technique)
+    tcp is fast enough, elastic and portable.
+    endpoint files with .ipc extention in the same directory
+  }
 }
 
-http://zguide.zeromq.org/page:all#Sending-and-Receiving-Messages
+http://zguide.zeromq.org/page:all#ZeroMQ-is-Not-a-Neutral-Carrier
 
 Chapter 2 - Sockets and Patterns {
   synchronize subscriber and publisher -> avoid losing data
